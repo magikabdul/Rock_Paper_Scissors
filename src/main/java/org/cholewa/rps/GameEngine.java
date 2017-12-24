@@ -105,23 +105,11 @@ public final class GameEngine {
     public boolean isPlayerWinner(String playerSelection, String computerSelection) {
 
         if (playerSelection.equals(GAME_OBJECT_ROCK)) {
-            if (computerSelection.equals(GAME_OBJECT_PAPER)) {
-                return false;
-            } else {
-                return true;
-            }
+            return (computerSelection.equals(GAME_OBJECT_SCISSOR));
         } else if (playerSelection.equals(GAME_OBJECT_PAPER)) {
-            if (computerSelection.equals(GAME_OBJECT_ROCK)) {
-                return false;
-            } else {
-                return true;
-            }
-        } else { //(playerSelection.equals(GAME_OBJECT_SCISSOR)) {
-            if (computerSelection.equals(GAME_OBJECT_ROCK)) {
-                return false;
-            } else {
-                return true;
-            }
+            return (computerSelection.equals(GAME_OBJECT_ROCK));
+        } else {
+            return (computerSelection.equals(GAME_OBJECT_PAPER));
         }
     }
 }
