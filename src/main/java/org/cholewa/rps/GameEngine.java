@@ -3,7 +3,6 @@ package org.cholewa.rps;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 public final class GameEngine {
     private static String GAME_OBJECT_ROCK = "ROCK";
@@ -29,22 +28,17 @@ public final class GameEngine {
     }
 
     public void play() {
-        System.out.println("\tNew game has begin\n");
+        MessagingService.messageGameRoundHeader(round, roundsToPlay);
+        KeyboardScanner scanner = new KeyboardScanner();
 
-        Scanner scanner = new Scanner(System.in);
         Random r = new Random();
 
         String playerSelection;
         String computerSelection;
 
         while (!end) {
-            System.out.println("\n----- Round number " + round + " has begin -----");
-            System.out.println("Please make your choice: ");
-            System.out.println("\t 1. Rock");
-            System.out.println("\t 2. Paper");
-            System.out.println("\t 3. Scissor");
-            System.out.println("\n\t 'x' - end game");
-            System.out.println("\t 'n' - new game");
+            MessagingService.messageGameRules();
+            
 
             playerSelection = "";
 

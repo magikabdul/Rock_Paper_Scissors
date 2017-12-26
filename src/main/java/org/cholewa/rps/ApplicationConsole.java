@@ -1,13 +1,10 @@
 package org.cholewa.rps;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 public class ApplicationConsole {
     private Player player;
     private int numberOfRounds;
 
-    private Scanner scanner = new Scanner(System.in);
+    private KeyboardScanner scanner = new KeyboardScanner();
 
     public ApplicationConsole() {
         player = setUpPlayer();
@@ -15,27 +12,13 @@ public class ApplicationConsole {
         new GameEngine(player, numberOfRounds);
     }
 
-    public Player setUpPlayer() {
-        System.out.println("Please enter your name or press 'x' to exit the game");
-
-        String name = scanner.nextLine();
-        if (name.equals("x")) {
-            System.exit(0);
-        }
-
-        return new Player(name);
+    private Player setUpPlayer() {
+        MessagingService.messageEnterPlayerName();
+        return new Player(scanner.processGetSelection());
     }
 
-    public int setNumberOfRounds() {
-        System.out.println(player.getName() + " please enter number of game rounds");
-        int rounds = 0;
-
-        try {
-            rounds = scanner.nextInt();
-        } catch (InputMismatchException e) {
-            System.out.println("Number of rounds has to be a number");
-        }
-
-        return rounds;
+    private int setNumberOfRounds() {
+        MessagingService.messageGetRoundsNumber(player.getName());
+        return scanner.processGetRoundsNumber();
     }
 }
