@@ -56,7 +56,7 @@ public class KeyboardScanner {
                 numberOfRounds = scanner.nextInt();
             } catch (InputMismatchException e) {
                 scanner.next();
-                System.out.println("Please enter valid numeric value");
+                System.out.println("Please enter valid numeric value (larger then 0");
             }
 
             if (numberOfRounds > 0) {

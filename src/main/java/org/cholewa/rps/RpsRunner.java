@@ -8,17 +8,20 @@ public class RpsRunner {
 
         MessagingService.messageGameStart();
 
-        String letter = scanner.processGetSelection(new String[]{"1", "2", "x"});
+        String letter = scanner.processGetSelection();
 
-        if (letter.equals("1")) {
-            MessagingService.messageSelectedGameConsole();
-            new ApplicationConsole();
-        } else if (letter.equals("2")) {
-            MessagingService.messageSelectedGameWindows();
-            new ApplicationWindows();
-        } else {
-            MessagingService.messageExit();
-            System.exit(0);
+        switch (letter) {
+            case "1":
+                MessagingService.messageSelectedGameConsole();
+                new ApplicationConsole();
+                break;
+            case "2":
+                MessagingService.messageSelectedGameWindows();
+                new ApplicationWindows();
+                break;
+            default:
+                MessagingService.messageExit();
+                System.exit(0);
         }
     }
 }

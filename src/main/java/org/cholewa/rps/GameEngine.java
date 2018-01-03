@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public final class GameEngine {
+final class GameEngine {
     private static String GAME_OBJECT_ROCK = "ROCK";
     private static String GAME_OBJECT_PAPER = "PAPER";
     private static String GAME_OBJECT_SCISSOR = "SCISSOR";
@@ -12,58 +12,64 @@ public final class GameEngine {
     private List<String> GAME_OBJECTS = Arrays.asList(GAME_OBJECT_ROCK, GAME_OBJECT_PAPER, GAME_OBJECT_SCISSOR);
 
     private Player player;
-    private int roundsToPlay = 0;
-    private int round;
-    private boolean end;
+    private int roundsToPlay;
 
-    private int playerScore = 0;
-    private int computerScore = 0;
-
-    public GameEngine(Player player, int roundsToPlay) {
+    GameEngine(Player player, int roundsToPlay) {
         this.player = player;
         this.roundsToPlay = roundsToPlay;
-        this.round = 1;
-        this.end = false;
         play();
     }
 
-    public void play() {
-        MessagingService.messageGameRoundHeader(round, roundsToPlay);
-        KeyboardScanner scanner = new KeyboardScanner();
+    private void play() {
+        int round = 1;
 
-        Random r = new Random();
+        KeyboardScanner scanner = new KeyboardScanner();
 
         String playerSelection;
         String computerSelection;
 
-        while (!end) {
-            MessagingService.messageGameRules();
-            
+        boolean end = false;
 
+        int playerScore = 0;
+        int computerScore = 0;
+
+
+        while (!end) {
+            MessagingService.messageGameRoundHeader(round, roundsToPlay, player.getName(), playerScore, computerScore);
+            MessagingService.messageGameRules();
+
+            String letter = scanner.processGetSelection(new String[]{"1", "2", "3", "x", "n"});
             playerSelection = "";
 
-            switch (scanner.next().charAt(0)) {
-                case '1': {
+            switch (letter) {
+                case "1": {
                     playerSelection = GAME_OBJECT_ROCK;
                     break;
                 }
-                case '2': {
+                case "2": {
                     playerSelection = GAME_OBJECT_PAPER;
                     break;
                 }
-                case '3': {
+                case "3": {
                     playerSelection = GAME_OBJECT_SCISSOR;
                     break;
                 }
+                case "x": {
+                    MessagingService.messageExit();
+                    System.exit(0);
+                }
+                case "n": {
+                    play();
+                }
             }
 
-            computerSelection = GAME_OBJECTS.get(r.nextInt(3));
-            showSelections(playerSelection, computerSelection);
+            computerSelection = getComputerSelection();
+            MessagingService.messageShowPlayersSelection(playerSelection, computerSelection);
 
             if (playerSelection.equals(computerSelection)) {
-                System.out.println("\n No winner of this round, play again");
+                MessagingService.messageNoRoundWinner();
             } else {
-                if (isPlayerWinner(playerSelection, computerSelection)) {
+                if ((isPlayerWinner(playerSelection, computerSelection))) {
                     playerScore++;
                 } else {
                     computerScore++;
@@ -71,32 +77,24 @@ public final class GameEngine {
                 round++;
             }
 
-            showScore(playerScore, computerScore);
+            end = isGameFinished(round);
 
-            if (round > roundsToPlay) {
-                end = true;
-
-                if (playerScore > computerScore) {
-                    System.out.println("\nPlayer wins !!!");
-                } else if (computerScore > playerScore) {
-                    System.out.println("\nComputer wins !!!");
-                } else {
-                    System.out.println("\nGame has no winner");
-                }
+            if (!end) {
+                System.out.println("Press any key !!!");
+                scanner.processGetSelection();
             }
         }
+
+        MessagingService.messageShowGameWinner(playerScore, computerScore, player.getName());
     }
 
-    public void showSelections(String playerSelection, String computerSelection) {
-        System.out.println("Your choice - " + playerSelection);
-        System.out.println("Computer choice - " + computerSelection);
+    private String getComputerSelection() {
+        Random r = new Random();
+
+        return GAME_OBJECTS.get(r.nextInt(3));
     }
 
-    public void showScore(int playerScore, int computerScore) {
-        System.out.println("\n" + player.getName() + "  " + playerScore + ":" + computerScore + "  " + "Computer");
-    }
-
-    public boolean isPlayerWinner(String playerSelection, String computerSelection) {
+    private boolean isPlayerWinner(String playerSelection, String computerSelection) {
 
         if (playerSelection.equals(GAME_OBJECT_ROCK)) {
             return (computerSelection.equals(GAME_OBJECT_SCISSOR));
@@ -105,5 +103,9 @@ public final class GameEngine {
         } else {
             return (computerSelection.equals(GAME_OBJECT_PAPER));
         }
+    }
+
+    private boolean isGameFinished(int round) {
+        return (round > roundsToPlay);
     }
 }

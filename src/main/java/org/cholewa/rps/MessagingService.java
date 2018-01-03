@@ -6,7 +6,7 @@ public class MessagingService {
         System.out.println("Select type of game:\n");
         System.out.println("\t 1. Console version");
         System.out.println("\t 2. Windows version");
-        System.out.println("\n\t Press 'x' to exit");
+        System.out.println("\n\t Any other key to exit");
     }
 
     public static void messageSelectedGameConsole() {
@@ -22,33 +22,60 @@ public class MessagingService {
         System.out.println("\n" + name + " please enter NUMBER of game rounds!");
     }
 
-    public static void messageGameRoundHeader(int round, int numberOfRounds) {
-        clearConsole();
+    public static void messageGameRoundHeader(int round, int numberOfRounds,
+                                              String playerName,
+                                              int playerScore, int computerScore) {
+        int numberOfSpaces;
 
-        String main = "";
-        for (int i = 0; i < 35; i++) {
-            if (i == 0) {
-                main = "|";
-            } else if (i == 34) {
-                main = main + "|";
-            } else {
-                if (i < 10 && i > 25) {
-                    main = main + " ";
-                } else if (i == 11) {
-                    main = main + "             Round no. " + round + " of " + numberOfRounds + "             ";
-                }
-            }
-        }
+        clearConsole();
 
         System.out.println("|===========================================|");
         System.out.println("|                                           |");
+
+        String main = "Round no. " + round + " of " + numberOfRounds;
+
+        String start = "|";
+        numberOfSpaces = (45 - main.length()) / 2;
+        for (int i = 1; i < numberOfSpaces; i++) {
+            start = start + " ";
+        }
+
+        String end = "";
+
+        if (numberOfRounds > 9) {
+            numberOfSpaces--;
+        }
+
+        for (int i = 0; i < numberOfSpaces; i++) {
+            end = end + " ";
+        }
+        end = end + "|";
+
+        System.out.println(start + main+ end);
+        System.out.println("|                                           |");
+
+        main = "|";
+        if (computerScore < 10) {
+            main = main + "          Computer " + computerScore + " : " + playerScore + " " + playerName;
+        } else {
+            main = main + "         Computer " + computerScore + " : " + playerScore + " " + playerName;
+        }
+
+        numberOfSpaces = 45 - main.length() - 1;
+
+        for (int i = 0; i < numberOfSpaces; i++) {
+            main = main + " ";
+        }
+
+        main = main + "|";
+
         System.out.println(main);
         System.out.println("|                                           |");
         System.out.println("|===========================================|");
     }
 
     public static void messageGameRules() {
-        System.out.println("Please make your choice: ");
+        System.out.println("\nPlease make your choice: ");
         System.out.println("\t 1. ROCK");
         System.out.println("\t 2. PAPER");
         System.out.println("\t 3. SCISSOR");
@@ -56,9 +83,56 @@ public class MessagingService {
         System.out.println("\t 'n' - new game");
     }
 
+    public static void messageShowPlayersSelection(String  playerSelection, String computerSelection) {
+        System.out.println("\nYour choice - \t" + playerSelection);
+        System.out.println("Computer choice - \t" + computerSelection);
+    }
+
+    public static void messageNoRoundWinner() {
+        System.out.println("\n No winner of this round, play again !!!");
+    }
+
     public static void messageSelectedGameWindows() {
         clearConsole();
         System.out.println("You chose the Windows Version");
+    }
+
+    public static void messageShowGameWinner(int playerScore, int computerScore, String playerName) {
+        clearConsole();
+        System.out.println("|===========================================|");
+        System.out.println("|                Final Score                |");
+        System.out.println("|===========================================|");
+        System.out.println("|                                           |");
+
+        int numberOfSpaces;
+        String main = "|";
+        if (computerScore < 10) {
+            main = main + "          Computer " + computerScore + " : " + playerScore + " " + playerName;
+        } else {
+            main = main + "         Computer " + computerScore + " : " + playerScore + " " + playerName;
+        }
+
+        numberOfSpaces = 45 - main.length() - 1;
+
+        for (int i = 0; i < numberOfSpaces; i++) {
+            main = main + " ";
+        }
+
+        main = main + "|";
+
+        System.out.println(main);
+        System.out.println("|                                           |");
+        System.out.println("|===========================================|");
+
+        if (playerScore > computerScore) {
+            System.out.println("|                Player wins                |");
+        } else if (playerScore < computerScore) {
+            System.out.println("|               Computer wins               |");
+        } else {
+            System.out.println("|            Game has no winner             |");
+        }
+
+        System.out.println("|===========================================|");
     }
 
     public static void messageExit() {

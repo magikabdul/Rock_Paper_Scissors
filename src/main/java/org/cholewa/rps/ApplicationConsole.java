@@ -1,15 +1,13 @@
 package org.cholewa.rps;
 
-public class ApplicationConsole {
+class ApplicationConsole {
     private Player player;
-    private int numberOfRounds;
 
     private KeyboardScanner scanner = new KeyboardScanner();
 
-    public ApplicationConsole() {
+    ApplicationConsole() {
         player = setUpPlayer();
-        numberOfRounds = setNumberOfRounds();
-        new GameEngine(player, numberOfRounds);
+        new GameEngine(player, setNumberOfRounds());
     }
 
     private Player setUpPlayer() {
