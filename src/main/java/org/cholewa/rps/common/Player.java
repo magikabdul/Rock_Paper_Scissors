@@ -1,9 +1,9 @@
-package org.cholewa.rps;
+package org.cholewa.rps.common;
 
 public final class Player {
     private String name;
 
-    Player(String name) {
+    public Player(String name) {
         this.name = name;
     }
 

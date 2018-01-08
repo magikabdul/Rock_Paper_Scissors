@@ -1,5 +1,10 @@
 package org.cholewa.rps;
 
+import org.cholewa.rps.console.ApplicationConsole;
+import org.cholewa.rps.console.KeyboardScanner;
+import org.cholewa.rps.console.MessagingService;
+import org.cholewa.rps.windows.ApplicationWindows;
+
 public class RpsRunner {
 
     public static void main(String[] args) {
@@ -8,20 +13,25 @@ public class RpsRunner {
 
         MessagingService.messageGameStart();
 
-        String letter = scanner.processGetSelection();
+        String letter = scanner.processGetSelectionAnyString();
 
         switch (letter) {
-            case "1":
+            case "1": {
                 MessagingService.messageSelectedGameConsole();
-                new ApplicationConsole();
+                ApplicationConsole applicationConsole = new ApplicationConsole();
+                applicationConsole.run();
                 break;
-            case "2":
+            }
+            case "2": {
                 MessagingService.messageSelectedGameWindows();
-                new ApplicationWindows();
+                ApplicationWindows applicationWindows = new ApplicationWindows();
+                applicationWindows.run();
                 break;
-            default:
+            }
+            default: {
                 MessagingService.messageExit();
                 System.exit(0);
+            }
         }
     }
 }

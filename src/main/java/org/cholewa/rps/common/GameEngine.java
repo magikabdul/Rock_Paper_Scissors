@@ -1,10 +1,14 @@
-package org.cholewa.rps;
+package org.cholewa.rps.common;
+
+import org.cholewa.rps.console.KeyboardScanner;
+import org.cholewa.rps.console.MessagingService;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-final class GameEngine {
+public final class GameEngine {
+    private KeyboardScanner scanner = new KeyboardScanner();
     private static String GAME_OBJECT_ROCK = "ROCK";
     private static String GAME_OBJECT_PAPER = "PAPER";
     private static String GAME_OBJECT_SCISSOR = "SCISSOR";
@@ -14,16 +18,13 @@ final class GameEngine {
     private Player player;
     private int roundsToPlay;
 
-    GameEngine(Player player, int roundsToPlay) {
+    public GameEngine(Player player, int roundsToPlay) {
         this.player = player;
         this.roundsToPlay = roundsToPlay;
-        play();
     }
 
-    private void play() {
+    public void play() {
         int round = 1;
-
-        KeyboardScanner scanner = new KeyboardScanner();
 
         String playerSelection;
         String computerSelection;
@@ -38,38 +39,15 @@ final class GameEngine {
             MessagingService.messageGameRoundHeader(round, roundsToPlay, player.getName(), playerScore, computerScore);
             MessagingService.messageGameRules();
 
-            String letter = scanner.processGetSelection(new String[]{"1", "2", "3", "x", "n"});
-            playerSelection = "";
-
-            switch (letter) {
-                case "1": {
-                    playerSelection = GAME_OBJECT_ROCK;
-                    break;
-                }
-                case "2": {
-                    playerSelection = GAME_OBJECT_PAPER;
-                    break;
-                }
-                case "3": {
-                    playerSelection = GAME_OBJECT_SCISSOR;
-                    break;
-                }
-                case "x": {
-                    MessagingService.messageExit();
-                    System.exit(0);
-                }
-                case "n": {
-                    play();
-                }
-            }
-
+            playerSelection = getPlayerSelection();
             computerSelection = getComputerSelection();
+
             MessagingService.messageShowPlayersSelection(playerSelection, computerSelection);
 
-            if (playerSelection.equals(computerSelection)) {
+            if (areSelectionsTheSame(playerSelection, computerSelection)) {
                 MessagingService.messageNoRoundWinner();
             } else {
-                if ((isPlayerWinner(playerSelection, computerSelection))) {
+                if (isPlayerWinner(playerSelection, computerSelection)) {
                     playerScore++;
                 } else {
                     computerScore++;
@@ -81,11 +59,35 @@ final class GameEngine {
 
             if (!end) {
                 System.out.println("Press any key !!!");
-                scanner.processGetSelection();
+                scanner.processGetSelectionAnyString();
             }
         }
 
         MessagingService.messageShowGameWinner(playerScore, computerScore, player.getName());
+    }
+
+    private boolean areSelectionsTheSame(String playerSelection, String computerSelection) {
+        return playerSelection.equals(computerSelection);
+    }
+
+    private String getPlayerSelection() {
+        String s = scanner.processGetSelection(new String[]{"1", "2", "3", "x", "n"});
+
+        switch (s) {
+            case "1":
+                return GAME_OBJECT_ROCK;
+            case "2":
+                return GAME_OBJECT_PAPER;
+            case "3":
+                return GAME_OBJECT_SCISSOR;
+            case "n":
+                play();
+                break;
+            default:
+                MessagingService.messageExit();
+                System.exit(0);
+        }
+        return "";
     }
 
     private String getComputerSelection() {

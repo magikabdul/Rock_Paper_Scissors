@@ -1,12 +1,14 @@
-package org.cholewa.rps;
+package org.cholewa.rps.console;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class KeyboardScanner {
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
-    public String processGetSelection() {
+    public String processGetSelectionAnyString() {
         String mySing = "";
 
         try {
@@ -23,28 +25,24 @@ public class KeyboardScanner {
         String mySing = "";
 
         while (!isCorrect) {
-            try {
-                mySing = scanner.next();
-            } catch (InputMismatchException e) {
-                System.out.println("Enter the correct value !!!");
-                scanner.next();
-            }
-
-            for (String s : letters) {
-                if (s.equals(mySing)) {
-                    isCorrect = true;
-                }
-            }
+            mySing = processGetSelectionAnyString();
+            isCorrect = validateSign(mySing, letters);
 
             if (!isCorrect) {
-                System.out.print("Wrong sing, please select again");
-                for (String s : letters) {
-                    System.out.print(s + ", ");
-                }
-                System.out.print("\b\b\n\n");
+                informAboutCorrectSelection(letters);
             }
         }
         return mySing;
+    }
+
+    private boolean validateSign(String sign, String[] letters) {
+        return Arrays.stream(letters).filter(s -> s.equals(sign)).count() > 0;
+    }
+
+    private void informAboutCorrectSelection(String[] letters) {
+        System.out.print("Wrong sing, please select again ");
+        System.out.println(Arrays.stream(letters).collect(Collectors.joining(",")));
+        System.out.print("\n\n");
     }
 
     public int processGetRoundsNumber() {
