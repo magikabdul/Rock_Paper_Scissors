@@ -9,11 +9,11 @@ import java.util.Random;
 
 public final class GameEngine {
     private KeyboardScanner scanner = new KeyboardScanner();
-    private static String GAME_OBJECT_ROCK = "ROCK";
-    private static String GAME_OBJECT_PAPER = "PAPER";
-    private static String GAME_OBJECT_SCISSOR = "SCISSOR";
+    private static final String GAME_OBJECT_ROCK = "ROCK";
+    private static final String GAME_OBJECT_PAPER = "PAPER";
+    private static final String GAME_OBJECT_SCISSOR = "SCISSOR";
 
-    private List<String> GAME_OBJECTS = Arrays.asList(GAME_OBJECT_ROCK, GAME_OBJECT_PAPER, GAME_OBJECT_SCISSOR);
+    private final List<String> GAME_OBJECTS = Arrays.asList(GAME_OBJECT_ROCK, GAME_OBJECT_PAPER, GAME_OBJECT_SCISSOR);
 
     private Player player;
     private int roundsToPlay;

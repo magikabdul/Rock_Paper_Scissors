@@ -5,11 +5,11 @@ import org.cholewa.rps.common.Player;
 
 public class ApplicationConsole {
     private KeyboardScanner scanner = new KeyboardScanner();
-    private Player player;
 
     public void run() {
-        player = setUpPlayer();
-        GameEngine gameEngine = new GameEngine(player, setNumberOfRounds());
+        Player player = setUpPlayer();
+        int numberOfRounds = setNumberOfRounds(player);
+        GameEngine gameEngine = new GameEngine(player, numberOfRounds);
         gameEngine.play();
     }
 
@@ -18,7 +18,7 @@ public class ApplicationConsole {
         return new Player(scanner.processGetSelectionAnyString());
     }
 
-    private int setNumberOfRounds() {
+    private int setNumberOfRounds(Player player) {
         MessagingService.messageGetRoundsNumber(player.getName());
         return scanner.processGetRoundsNumber();
     }
